@@ -1,0 +1,93 @@
+nav {
+  background-color: #1596ff;
+}
+nav ul li a {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255) !important;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+#logo {
+  width: 100px;
+}
+
+h2 {
+  margin-left: 5px;
+}
+
+header h3 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+h4 {
+  color: white;
+}
+
+h5 {
+  color: black;
+}
+
+#carrito h4 {
+  color: black;
+}
+
+.cCard {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 0, 0);
+  text-align: center;
+  padding: 10px;
+  margin: 5px;
+}
+.cCard img {
+  width: 300px;
+  height: 300px;
+  padding: 5px;
+}
+
+.btnn {
+  background-color: rgb(189, 73, 73);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.267);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.048), 0 6px 20px 0 rgba(0, 0, 0, 0.062);
+  transition-duration: 0.4s;
+}
+
+.btnn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.116), 0 17px 50px 0 rgba(0, 0, 0, 0.116);
+  background-color: rgba(144, 143, 214, 0.863);
+}
+
+#ttl {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+#ttl h1 {
+  font-size: 3em;
+  margin: 0px;
+}
+
+input[type=checkbox] {
+  transform: scale(1.2);
+}
+
+#carrito {
+  background-color: white;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+#carrito h3, #carrito h4 {
+  padding: 5px;
+}
+#carrito p {
+  padding: 5px;
+  font-size: 1.3em;
+}
