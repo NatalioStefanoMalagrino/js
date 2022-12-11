@@ -1,0 +1,22 @@
+[
+    {
+        "nombre": "Coca Cola",
+        "precio": 300,
+        "id": "1"
+    },
+    {
+        "nombre": "Alfajor Milka",
+        "precio": 150,
+        "id": "2"
+    },
+    {
+        "nombre": "Sugus Confitados",
+        "precio": 100,
+        "id": "3"
+    },
+    {
+        "nombre": "Chizitos",
+        "precio": 12,
+        "id": "4"
+    }
+]

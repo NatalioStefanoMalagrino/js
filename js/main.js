@@ -2,59 +2,64 @@ const changuito = JSON.parse(localStorage.getItem('changuito')) || []
 
 let precioFinal = JSON.parse(localStorage.getItem('precioFinal')) || 0
 
-var inputs = JSON.parse(localStorage.getItem('nputs')) || document.querySelectorAll('input[type="checkbox"]')
-
-for (let omega of inputs) {
-    document.getElementById(omega.id).checked = omega.checked
-}
-
 changuitoCargado()
 
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
 
-    const mercaderia = document.querySelectorAll('.inputb input')
+    const mercaderia = document.getElementsByClassName('btnI')
+    const qmercaderia = document.getElementsByClassName('btnR')
     for (let merc of mercaderia) {
-        merc.addEventListener('change', (evento)=> {
-            if (evento.currentTarget.checked) {
-                let nombre = evento.currentTarget.parentElement.dataset.title
-                let precio = evento.currentTarget.parentElement.dataset.price
-                changuito.push(nombre + " - $" + precio)
-                precioFinal += Number(precio)
-            } else {
-                let nombre = evento.currentTarget.parentElement.dataset.title
-                let precio = evento.currentTarget.parentElement.dataset.price
-
-                let index = changuito.indexOf(nombre + " - $" + precio);
-                if (index >= 0) {
-                    changuito.splice( index, 1 );
-                }
-
-                precioFinal -= Number(precio)
-            }
-            changuitoCargado()
-
-            inputs = document.querySelectorAll('input[type="checkbox"]')
-            var inputsss = []
-            for (let inp of inputs) {
-                inputsss.push({id:inp.id, checked:inp.checked})
-            }
-            localStorage.setItem('nputs', JSON.stringify(inputsss))
+        merc.addEventListener('click', (evento) => {
+            let productoId = evento.currentTarget.parentElement.dataset.id
+            fetch('../productosApi.json')
+                .then((respuesta) => respuesta.json())
+                .then((productosjson) => {
+                    for (let p of productosjson) {
+                        if (p.id == productoId) {
+                            let nombre = p.nombre
+                            let precio = p.precio
+                            let id = p.id
+                            changuito.push({
+                                nombre: nombre,
+                                precio: precio,
+                                id: id
+                            })
+                            precioFinal += Number(precio)
+                        }
+                    }
+                })
+                .finally(() => { changuitoCargado() })
         })
     }
 
+    for (let qmerc of qmercaderia) {
+        qmerc.addEventListener('click', (evento) => {
+            let productoId = evento.currentTarget.parentElement.dataset.id
+            const index = changuito.findIndex(obj => {
+                return obj.id === productoId
+            })
+            if (index >= 0) {
+                let precio = changuito[index].precio
+                let nombre = changuito[index].nombre
+                precioFinal -= Number(precio)
 
+                changuito.splice(index, 1)
+                changuitoCargado()
+            }
+        })
+    }
 
 })
 
-function changuitoCargado () {
+function changuitoCargado() {
     localStorage.setItem('changuito', JSON.stringify(changuito))
     localStorage.setItem('precioFinal', JSON.stringify(precioFinal))
     let escribir = ""
     for (let chango of changuito) {
-        if (nombre =! null) {
-            escribir +=`
+        if (nombre = ! null) {
+            escribir += `
             <li>
-            ${chango}
+            ${chango.nombre + " - $" + chango.precio}
             </li>
             `
         }
@@ -62,41 +67,34 @@ function changuitoCargado () {
     let ul = document.querySelector('#carrito ul')
     let h4 = document.querySelector('#carrito h4')
     h4.innerHTML = "$" + precioFinal
-
     ul.innerHTML = escribir
 }
 
-const btn = document.getElementById("btnPagar")
-btn.onclick = (evento)=> {
-    localStorage.removeItem ('changuito')
-    localStorage.removeItem ('precioFinal')
-    localStorage.removeItem ('nputs')
+const btn = document.querySelector("#btnPagar")
+btn.onclick = (evento) => {
     if (precioFinal != 0) {
-        evento.preventDefault ()
-        let pagado = `
-        <div class="d-flex justify-content-between">
-            <h4>El pago fue de $${precioFinal}</h4>
-            <button class="btnn m-2" id="btnReiniciar">Reiniciar compra</button>
-            </div>
-        `
-        let changoPagado = document.querySelector('#carrito')
-        changoPagado.innerHTML = pagado
+        evento.preventDefault()
+
+        Swal.fire({
+            title: `El pago de ${precioFinal} fue realizado con éxito`,
+            icon: `success`
+        }).then((res) => {
+            if (res.isConfirmed || res.isDismissed) {
+                window.location.reload()
+            }
+        })
+
+    } else {
+        evento.preventDefault()
+
+
+        Swal.fire({
+            title: `El carrito esta vacío`,
+            icon: `error`
+        })
     }
-    else {
-        evento.preventDefault ()
-        let pagado = `
-        <div class="d-flex justify-content-between">
-        <h4>Changuito sin nada</h4>
-        <button class="btnn m-2" id="btnReiniciar">Reiniciar compra</button>
-        </div>
-        `
-        let changoPagado = document.querySelector('#carrito')
-        changoPagado.innerHTML = pagado
-    }
-    const btnReiniciar = document.getElementById("btnReiniciar")
-    btnReiniciar.onclick = (evento)=> {
-        evento.preventDefault ()
-        window.location.reload ()
-    }
+
+    localStorage.removeItem(`changuito`)
+    localStorage.removeItem(`precioFinal`)
 }
 
